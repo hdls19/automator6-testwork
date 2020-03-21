@@ -1,6 +1,8 @@
 package ua.com.qatestlab.prestashop.automation.automator6;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -50,7 +52,9 @@ public class Main {
 
     	consoleAppender.setThreshold(Level.INFO);
 
-    	RollingFileAppender fileAppender = new RollingFileAppender(pattern, "log.txt", true);
+    	RollingFileAppender fileAppender = new RollingFileAppender(pattern, 
+    			"logs/" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + ".log", true);
+
     	fileAppender.setMaxFileSize("5MB");
     	fileAppender.setMaxBackupIndex(0);
 
