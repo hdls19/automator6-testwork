@@ -26,18 +26,25 @@ public class Main {
 		System.setProperty("webdriver.chrome.driver","chromedriver.exe");
 		WebDriver driver = new ChromeDriver();
 		
-		//Title test
-		LOGGER.info("Title test");
-		String mainURL = "http://prestashop-automation.qatestlab.com.ua/ru/";
-		String expectedTitle = "prestashop-automation";
-		
-		driver.get(mainURL);
-		
+		//Go to main URL
+		driver.get("http://prestashop-automation.qatestlab.com.ua/ru/");
 		MainPage mainPage = new MainPage(driver);
 		
+		//Title test
+		LOGGER.info("Title test");
+		
+		String expectedTitle = "prestashop-automation";
 		String actualTitle = mainPage.getTitle();
 		LOGGER.info("Actual title: " + actualTitle);
 		LOGGER.info("Expected title: " + expectedTitle);
+		
+		//Currency test
+		LOGGER.info("Currency test");
+		
+		String expectedCurrency = "UAH ₴";
+		String actualCurrency = mainPage.getCurrency();
+		LOGGER.info("Actual currency: " + actualCurrency);
+		LOGGER.info("Expected currency: " + expectedCurrency);
 		
 		//Close web driver
 		LOGGER.info("Close web driver");
