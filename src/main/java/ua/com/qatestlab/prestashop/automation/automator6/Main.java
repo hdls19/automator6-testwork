@@ -32,7 +32,9 @@ public class Main {
 		MainPage mainPage = new MainPage(driver);
 		
 		//Title test
+		LOGGER.info("-------------------------------------------------------");
 		LOGGER.info("Title test");
+		LOGGER.info("-------------------------------------------------------");
 		
 		String expectedTitle = "prestashop-automation";
 		String actualTitle = mainPage.getTitle();
@@ -41,7 +43,9 @@ public class Main {
 		LOGGER.info("Is match: " + expectedTitle.equals(actualTitle));
 		
 		//Currency test
+		LOGGER.info("-------------------------------------------------------");
 		LOGGER.info("Currency test");
+		LOGGER.info("-------------------------------------------------------");
 		
 		String expectedCurrency = "UAH ₴";
 		String actualCurrency = mainPage.getCurrency();
@@ -50,14 +54,18 @@ public class Main {
 		LOGGER.info("Is match: " + expectedCurrency.equals(actualCurrency));
 		
 		//Prices test
+		LOGGER.info("-------------------------------------------------------");
 		LOGGER.info("Prices test");
+		LOGGER.info("-------------------------------------------------------");
 		
 		String expectedCurrencySymbol = expectedCurrency.split(" ")[1];
 		List<String> prices = mainPage.getPrices();
 		checkPricesCurrency(prices, expectedCurrencySymbol);
 		
 		//Change currency test
+		LOGGER.info("-------------------------------------------------------");
 		LOGGER.info("Change currency test");
+		LOGGER.info("-------------------------------------------------------");
 		
 		expectedCurrency = "USD $";
 		actualCurrency = mainPage.setUSDCurrency().getCurrency();
@@ -66,13 +74,16 @@ public class Main {
 		LOGGER.info("Is match: " + expectedCurrency.equals(actualCurrency));
 		
 		//Prices test after change currency
+		LOGGER.info("-------------------------------------------------------");
 		LOGGER.info("Prices test after change currency");
+		LOGGER.info("-------------------------------------------------------");
 		
 		expectedCurrencySymbol = expectedCurrency.split(" ")[1];
 		prices = mainPage.getPrices();
 		checkPricesCurrency(prices, expectedCurrencySymbol);
 		
 		//Close web driver
+		LOGGER.info("-------------------------------------------------------");
 		LOGGER.info("Close web driver");
 		driver.close();
 		driver.quit();
