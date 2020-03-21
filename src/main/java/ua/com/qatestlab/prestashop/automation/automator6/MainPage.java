@@ -13,12 +13,13 @@ public class MainPage {
 
 	private static final int DEFAULT_WAITING_TIME = 10; //seconds
 	
-	private final WebDriver driver;
-	private final WebDriverWait driverWait;
+	protected final WebDriver driver;
+	protected final WebDriverWait driverWait;
 	
-	private By currentCurrencyLocator = By.xpath("//*[@id=\"_desktop_currency_selector\"]/div/span[2]");
-	private By usdCurrencyLocator = By.xpath("//a[text()=\"USD $\"]");
-	private By pricesLocator = By.xpath("//span[@itemprop=\"price\"]");
+	protected By currentCurrencyLocator = By.xpath("//*[@id=\"_desktop_currency_selector\"]/div/span[2]");
+	protected By usdCurrencyLocator = By.xpath("//a[text()=\"USD $\"]");
+	protected By pricesLocator = By.xpath("//span[@itemprop=\"price\"]");
+	protected By searchLocator = By.xpath("//*[@id=\"search_widget\"]/form/input[2]");
 	
 	public MainPage(WebDriver driver) {
 		this.driver = driver;
@@ -35,13 +36,11 @@ public class MainPage {
 		return new MainPage(driver);
 	}
 	
-	public String getTitle() {
-		return driver.getTitle();
-	}
-	
-	public String getCurrency() {
-		driverWait.until(ExpectedConditions.presenceOfElementLocated(currentCurrencyLocator));
-		return driver.findElement(currentCurrencyLocator).getText();
+	public SearchPage searchFor(String search) {
+		WebElement searchElement = driver.findElement(searchLocator);
+		searchElement.sendKeys(search);
+		searchElement.submit();
+		return new SearchPage(driver);
 	}
 	
 	public List<String> getPrices() {
@@ -50,4 +49,14 @@ public class MainPage {
 		elements.forEach(e -> prices.add(e.getText()));
 		return prices;
 	}
+	
+	public String getCurrency() {
+		driverWait.until(ExpectedConditions.presenceOfElementLocated(currentCurrencyLocator));
+		return driver.findElement(currentCurrencyLocator).getText();
+	}
+	
+	public String getTitle() {
+		return driver.getTitle();
+	}
+	
 }

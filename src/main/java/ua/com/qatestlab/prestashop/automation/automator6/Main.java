@@ -82,6 +82,21 @@ public class Main {
 		prices = mainPage.getPrices();
 		checkPricesCurrency(prices, expectedCurrencySymbol);
 		
+		//Search test
+		LOGGER.info("-------------------------------------------------------");
+		LOGGER.info("Search test");
+		LOGGER.info("-------------------------------------------------------");
+		
+		String searchQuery = "dress";
+		SearchPage searchPage = mainPage.searchFor(searchQuery);
+		
+		expectedTitle = "Поиск";
+		actualTitle = searchPage.getTitle();
+		
+		LOGGER.info("Actual title: " + actualTitle);
+		LOGGER.info("Expected title: " + expectedTitle);
+		LOGGER.info("Is match: " + expectedTitle.equals(actualTitle));
+		
 		//Close web driver
 		LOGGER.info("-------------------------------------------------------");
 		LOGGER.info("Close web driver");
