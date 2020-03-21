@@ -1,4 +1,8 @@
+#Ignore project files
 .settings/
 target/
 .classpath
 .project
+
+#Ignore log files
+logs/
