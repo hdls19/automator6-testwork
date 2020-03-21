@@ -3,6 +3,7 @@ package ua.com.qatestlab.prestashop.automation.automator6;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -47,6 +48,22 @@ public class Main {
 		LOGGER.info("Actual currency: " + actualCurrency);
 		LOGGER.info("Expected currency: " + expectedCurrency);
 		LOGGER.info("Is match: " + expectedCurrency.equals(actualCurrency));
+		
+		//Prices test
+		LOGGER.info("Prices test");
+		
+		String expectedCurrencySymbol = expectedCurrency.split(" ")[1];
+		List<String> prices = mainPage.getPrices();
+		prices.forEach(s -> {
+			try {
+				String actualCurrencySymbol = s.split(" ")[1];
+				boolean isMatch = expectedCurrencySymbol.equals(actualCurrencySymbol);
+				LOGGER.info("Price: " + s + ", currency symbol is match: " + isMatch);
+			}
+			catch (ArrayIndexOutOfBoundsException e) {
+				LOGGER.warn("There are no currency symbol in price: " + s, e);
+			}
+		});
 		
 		//Close web driver
 		LOGGER.info("Close web driver");
