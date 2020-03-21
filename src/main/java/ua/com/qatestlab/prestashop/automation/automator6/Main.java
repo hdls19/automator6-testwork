@@ -54,7 +54,32 @@ public class Main {
 		
 		String expectedCurrencySymbol = expectedCurrency.split(" ")[1];
 		List<String> prices = mainPage.getPrices();
-		prices.forEach(s -> {
+		checkPricesCurrency(prices, expectedCurrencySymbol);
+		
+		//Change currency test
+		LOGGER.info("Change currency test");
+		
+		expectedCurrency = "USD $";
+		actualCurrency = mainPage.setUSDCurrency().getCurrency();
+		LOGGER.info("Actual currency: " + actualCurrency);
+		LOGGER.info("Expected currency: " + expectedCurrency);
+		LOGGER.info("Is match: " + expectedCurrency.equals(actualCurrency));
+		
+		//Prices test after change currency
+		LOGGER.info("Prices test after change currency");
+		
+		expectedCurrencySymbol = expectedCurrency.split(" ")[1];
+		prices = mainPage.getPrices();
+		checkPricesCurrency(prices, expectedCurrencySymbol);
+		
+		//Close web driver
+		LOGGER.info("Close web driver");
+		driver.close();
+		driver.quit();
+	}
+	
+	private static void checkPricesCurrency(List<String> prices, String expectedCurrencySymbol) {
+		for (String s: prices) {
 			try {
 				String actualCurrencySymbol = s.split(" ")[1];
 				boolean isMatch = expectedCurrencySymbol.equals(actualCurrencySymbol);
@@ -63,12 +88,7 @@ public class Main {
 			catch (ArrayIndexOutOfBoundsException e) {
 				LOGGER.warn("There are no currency symbol in price: " + s, e);
 			}
-		});
-		
-		//Close web driver
-		LOGGER.info("Close web driver");
-		driver.close();
-		driver.quit();
+		};
 	}
 	
 	private static void initLogger() throws IOException {
