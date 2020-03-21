@@ -97,6 +97,17 @@ public class Main {
 		LOGGER.info("Expected title: " + expectedTitle);
 		LOGGER.info("Is match: " + expectedTitle.equals(actualTitle));
 		
+		//Search count test
+		LOGGER.info("-------------------------------------------------------");
+		LOGGER.info("Search count test");
+		LOGGER.info("-------------------------------------------------------");
+		
+		int expectedCount = 7;
+		int actualCount = searchPage.getFindCount();
+		LOGGER.info("Actual count: " + actualCount);
+		LOGGER.info("Expected count: " + expectedCount);
+		LOGGER.info("Is equals: " + (expectedCount == actualCount));
+		
 		//Close web driver
 		LOGGER.info("-------------------------------------------------------");
 		LOGGER.info("Close web driver");
