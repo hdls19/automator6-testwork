@@ -37,6 +37,7 @@ public class Main {
 		String actualTitle = mainPage.getTitle();
 		LOGGER.info("Actual title: " + actualTitle);
 		LOGGER.info("Expected title: " + expectedTitle);
+		LOGGER.info("Is match: " + expectedTitle.equals(actualTitle));
 		
 		//Currency test
 		LOGGER.info("Currency test");
@@ -45,6 +46,7 @@ public class Main {
 		String actualCurrency = mainPage.getCurrency();
 		LOGGER.info("Actual currency: " + actualCurrency);
 		LOGGER.info("Expected currency: " + expectedCurrency);
+		LOGGER.info("Is match: " + expectedCurrency.equals(actualCurrency));
 		
 		//Close web driver
 		LOGGER.info("Close web driver");
