@@ -26,100 +26,112 @@ public class Main {
 
 	private static final Logger LOGGER = LogManager.getLogger(Main.class);
 	
+	private static WebDriver driver;
+	
 	public static void main(String[] args) throws IOException {
-		LOGGER.info("=======================================================");
-		
-		//Selenium web driver initialization
-		LOGGER.info("Selenium web driver initialization");
-		System.setProperty("webdriver.chrome.driver","chromedriver.exe");
-		WebDriver driver = new ChromeDriver();
-		
-		//Go to main URL
-		driver.get("http://prestashop-automation.qatestlab.com.ua/ru/");
-		MainPage mainPage = new MainPage(driver);
-		
-		//Title test
-		LOGGER.info("-------------------------------------------------------");
-		LOGGER.info("Title test");
-		LOGGER.info("-------------------------------------------------------");
-		
-		String expectedTitle = "prestashop-automation";
-		String actualTitle = mainPage.getTitle();
-		LOGGER.info("Actual title: " + actualTitle);
-		LOGGER.info("Expected title: " + expectedTitle);
-		LOGGER.info("Is match: " + expectedTitle.equals(actualTitle));
-		
-		//Currency test
-		LOGGER.info("-------------------------------------------------------");
-		LOGGER.info("Currency test");
-		LOGGER.info("-------------------------------------------------------");
-		
-		String expectedCurrency = "UAH ₴";
-		String actualCurrency = mainPage.getCurrency();
-		LOGGER.info("Actual currency: " + actualCurrency);
-		LOGGER.info("Expected currency: " + expectedCurrency);
-		LOGGER.info("Is match: " + expectedCurrency.equals(actualCurrency));
-		
-		//Prices test
-		LOGGER.info("-------------------------------------------------------");
-		LOGGER.info("Prices test");
-		LOGGER.info("-------------------------------------------------------");
-		
-		String expectedCurrencySymbol = expectedCurrency.split(" ")[1];
-		List<String> prices = mainPage.getPrices();
-		checkPricesCurrency(prices, expectedCurrencySymbol);
-		
-		//Change currency test
-		LOGGER.info("-------------------------------------------------------");
-		LOGGER.info("Change currency test");
-		LOGGER.info("-------------------------------------------------------");
-		
-		expectedCurrency = "USD $";
-		actualCurrency = mainPage.setUSDCurrency().getCurrency();
-		LOGGER.info("Actual currency: " + actualCurrency);
-		LOGGER.info("Expected currency: " + expectedCurrency);
-		LOGGER.info("Is match: " + expectedCurrency.equals(actualCurrency));
-		
-		//Prices test after change currency
-		LOGGER.info("-------------------------------------------------------");
-		LOGGER.info("Prices test after change currency");
-		LOGGER.info("-------------------------------------------------------");
-		
-		expectedCurrencySymbol = expectedCurrency.split(" ")[1];
-		prices = mainPage.getPrices();
-		checkPricesCurrency(prices, expectedCurrencySymbol);
-		
-		//Search test
-		LOGGER.info("-------------------------------------------------------");
-		LOGGER.info("Search test");
-		LOGGER.info("-------------------------------------------------------");
-		
-		String searchQuery = "dress";
-		SearchPage searchPage = mainPage.searchFor(searchQuery);
-		
-		expectedTitle = "Поиск";
-		actualTitle = searchPage.getTitle();
-		
-		LOGGER.info("Actual title: " + actualTitle);
-		LOGGER.info("Expected title: " + expectedTitle);
-		LOGGER.info("Is match: " + expectedTitle.equals(actualTitle));
-		
-		//Search count test
-		LOGGER.info("-------------------------------------------------------");
-		LOGGER.info("Search count test");
-		LOGGER.info("-------------------------------------------------------");
-		
-		int expectedCount = 7;
-		int actualCount = searchPage.getFindCount();
-		LOGGER.info("Actual count: " + actualCount);
-		LOGGER.info("Expected count: " + expectedCount);
-		LOGGER.info("Is equals: " + (expectedCount == actualCount));
-		
-		//Close web driver
-		LOGGER.info("-------------------------------------------------------");
-		LOGGER.info("Close web driver");
-		driver.close();
-		driver.quit();
+		try {
+			LOGGER.info("=======================================================");
+			
+			//Selenium web driver initialization
+			LOGGER.info("Selenium web driver initialization");
+			System.setProperty("webdriver.chrome.driver","chromedriver.exe");
+			driver = new ChromeDriver();
+			
+			if (true) throw new IllegalStateException("Something goes wrong");
+			
+			//Go to main URL
+			driver.get("http://prestashop-automation.qatestlab.com.ua/ru/");
+			MainPage mainPage = new MainPage(driver);
+			
+			//Title test
+			LOGGER.info("-------------------------------------------------------");
+			LOGGER.info("Title test");
+			LOGGER.info("-------------------------------------------------------");
+			
+			String expectedTitle = "prestashop-automation";
+			String actualTitle = mainPage.getTitle();
+			LOGGER.info("Actual title: " + actualTitle);
+			LOGGER.info("Expected title: " + expectedTitle);
+			LOGGER.info("Is match: " + expectedTitle.equals(actualTitle));
+			
+			//Currency test
+			LOGGER.info("-------------------------------------------------------");
+			LOGGER.info("Currency test");
+			LOGGER.info("-------------------------------------------------------");
+			
+			String expectedCurrency = "UAH ₴";
+			String actualCurrency = mainPage.getCurrency();
+			LOGGER.info("Actual currency: " + actualCurrency);
+			LOGGER.info("Expected currency: " + expectedCurrency);
+			LOGGER.info("Is match: " + expectedCurrency.equals(actualCurrency));
+			
+			//Prices test
+			LOGGER.info("-------------------------------------------------------");
+			LOGGER.info("Prices test");
+			LOGGER.info("-------------------------------------------------------");
+			
+			String expectedCurrencySymbol = expectedCurrency.split(" ")[1];
+			List<String> prices = mainPage.getPrices();
+			checkPricesCurrency(prices, expectedCurrencySymbol);
+			
+			//Change currency test
+			LOGGER.info("-------------------------------------------------------");
+			LOGGER.info("Change currency test");
+			LOGGER.info("-------------------------------------------------------");
+			
+			expectedCurrency = "USD $";
+			actualCurrency = mainPage.setUSDCurrency().getCurrency();
+			LOGGER.info("Actual currency: " + actualCurrency);
+			LOGGER.info("Expected currency: " + expectedCurrency);
+			LOGGER.info("Is match: " + expectedCurrency.equals(actualCurrency));
+			
+			//Prices test after change currency
+			LOGGER.info("-------------------------------------------------------");
+			LOGGER.info("Prices test after change currency");
+			LOGGER.info("-------------------------------------------------------");
+			
+			expectedCurrencySymbol = expectedCurrency.split(" ")[1];
+			prices = mainPage.getPrices();
+			checkPricesCurrency(prices, expectedCurrencySymbol);
+			
+			//Search test
+			LOGGER.info("-------------------------------------------------------");
+			LOGGER.info("Search test");
+			LOGGER.info("-------------------------------------------------------");
+			
+			String searchQuery = "dress";
+			SearchPage searchPage = mainPage.searchFor(searchQuery);
+			
+			expectedTitle = "Поиск";
+			actualTitle = searchPage.getTitle();
+			
+			LOGGER.info("Actual title: " + actualTitle);
+			LOGGER.info("Expected title: " + expectedTitle);
+			LOGGER.info("Is match: " + expectedTitle.equals(actualTitle));
+			
+			//Search count test
+			LOGGER.info("-------------------------------------------------------");
+			LOGGER.info("Search count test");
+			LOGGER.info("-------------------------------------------------------");
+			
+			int expectedCount = 7;
+			int actualCount = searchPage.getFindCount();
+			LOGGER.info("Actual count: " + actualCount);
+			LOGGER.info("Expected count: " + expectedCount);
+			LOGGER.info("Is equals: " + (expectedCount == actualCount));
+		}
+		catch (Exception e) {
+			LOGGER.error("ERROR", e);
+		}
+		finally {
+			//Close web driver
+			LOGGER.info("-------------------------------------------------------");
+			LOGGER.info("Close web driver");
+			if (driver != null) {
+				driver.close();
+				driver.quit();
+			}
+		}
 	}
 	
 	private static void checkPricesCurrency(List<String> prices, String expectedCurrencySymbol) {
