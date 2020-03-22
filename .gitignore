@@ -6,3 +6,6 @@ target/
 
 #Ignore log files
 logs/
+
+#Ignore allure files
+.allure/
