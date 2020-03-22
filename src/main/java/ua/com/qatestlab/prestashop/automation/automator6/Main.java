@@ -1,32 +1,20 @@
 package ua.com.qatestlab.prestashop.automation.automator6;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.appender.ConsoleAppender;
-import org.apache.logging.log4j.core.config.Configurator;
-import org.apache.logging.log4j.core.config.builder.api.AppenderComponentBuilder;
-import org.apache.logging.log4j.core.config.builder.api.ComponentBuilder;
-import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
-import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
-import org.apache.logging.log4j.core.config.builder.api.LayoutComponentBuilder;
-import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
-import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 
 public class Main {
 
 	private static final Logger LOGGER = LogManager.getLogger(Main.class);
 	
-	private static WebDriver driver;
+	private static EventFiringWebDriver eventDriver;
 	
 	public static void main(String[] args) throws IOException {
 		try {
@@ -35,11 +23,14 @@ public class Main {
 			//Selenium web driver initialization
 			LOGGER.info("Selenium web driver initialization");
 			System.setProperty("webdriver.chrome.driver","chromedriver.exe");
-			driver = new ChromeDriver();
+			WebDriver driver = new ChromeDriver();
+			
+			eventDriver = new EventFiringWebDriver(driver);
+			eventDriver.register(new LoggerEventHandler(LOGGER));
 			
 			//Go to main URL
-			driver.get("http://prestashop-automation.qatestlab.com.ua/ru/");
-			MainPage mainPage = new MainPage(driver);
+			eventDriver.get("http://prestashop-automation.qatestlab.com.ua/ru/");
+			MainPage mainPage = new MainPage(eventDriver);
 			
 			//Title test
 			LOGGER.info("-------------------------------------------------------");
@@ -186,9 +177,9 @@ public class Main {
 			//Close web driver
 			LOGGER.info("-------------------------------------------------------");
 			LOGGER.info("Close web driver");
-			if (driver != null) {
-				driver.close();
-				driver.quit();
+			if (eventDriver != null) {
+				eventDriver.close();
+				eventDriver.quit();
 			}
 		}
 	}
@@ -207,39 +198,39 @@ public class Main {
 		};
 	}
 	
-	private static void initLogger() throws IOException {
-		ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder();
-    	
-		builder.setStatusLevel(Level.ERROR);
-		builder.setConfigurationName("RollingBuilder");
-		
-		//Create console appender
-		AppenderComponentBuilder appenderBuilder = builder.newAppender("stdout", "CONSOLE").addAttribute("target",
-				ConsoleAppender.Target.SYSTEM_OUT);
-		appenderBuilder.add(builder.newLayout("PatternLayout").addAttribute("pattern", "%d [%t] %-5level: %msg%n%throwable"));
-		
-		builder.add(appenderBuilder);
-		
-		//Create rolling file appender
-		LayoutComponentBuilder layoutBuilder = builder.newLayout("PatternLayout")
-				.addAttribute("pattern", "%d [%t] %-5level: %msg%n");
-		ComponentBuilder triggeringPolicy = builder.newComponent("Policies")
-				.addComponent(builder.newComponent("CronTriggeringPolicy").addAttribute("schedule", "0 0 0 * * ?"))
-				.addComponent(builder.newComponent("SizeBasedTriggeringPolicy").addAttribute("size", "100M"));
-		appenderBuilder = builder.newAppender("rolling", "RollingFile")
-				.addAttribute("fileName", "logs/rolling.log")
-				.addAttribute("filePattern", "logs/rolling-%d{MM-dd-yy}.log")
-				.add(layoutBuilder)
-				.addComponent(triggeringPolicy);
-		builder.add(appenderBuilder);
-		
-		builder.add(builder.newLogger("TestLogger", Level.DEBUG)
-				.add(builder.newAppenderRef("rolling"))
-				.addAttribute("additivity", false));
-		
-		builder.add(builder.newRootLogger(Level.DEBUG)
-				.add(builder.newAppenderRef("rolling")));
-		
-		Configurator.initialize(builder.build());
-   	}
+//	private static void initLogger() throws IOException {
+//		ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder();
+//    	
+//		builder.setStatusLevel(Level.ERROR);
+//		builder.setConfigurationName("RollingBuilder");
+//		
+//		//Create console appender
+//		AppenderComponentBuilder appenderBuilder = builder.newAppender("stdout", "CONSOLE").addAttribute("target",
+//				ConsoleAppender.Target.SYSTEM_OUT);
+//		appenderBuilder.add(builder.newLayout("PatternLayout").addAttribute("pattern", "%d [%t] %-5level: %msg%n%throwable"));
+//		
+//		builder.add(appenderBuilder);
+//		
+//		//Create rolling file appender
+//		LayoutComponentBuilder layoutBuilder = builder.newLayout("PatternLayout")
+//				.addAttribute("pattern", "%d [%t] %-5level: %msg%n");
+//		ComponentBuilder triggeringPolicy = builder.newComponent("Policies")
+//				.addComponent(builder.newComponent("CronTriggeringPolicy").addAttribute("schedule", "0 0 0 * * ?"))
+//				.addComponent(builder.newComponent("SizeBasedTriggeringPolicy").addAttribute("size", "100M"));
+//		appenderBuilder = builder.newAppender("rolling", "RollingFile")
+//				.addAttribute("fileName", "logs/rolling.log")
+//				.addAttribute("filePattern", "logs/rolling-%d{MM-dd-yy}.log")
+//				.add(layoutBuilder)
+//				.addComponent(triggeringPolicy);
+//		builder.add(appenderBuilder);
+//		
+//		builder.add(builder.newLogger("TestLogger", Level.DEBUG)
+//				.add(builder.newAppenderRef("rolling"))
+//				.addAttribute("additivity", false));
+//		
+//		builder.add(builder.newRootLogger(Level.DEBUG)
+//				.add(builder.newAppenderRef("rolling")));
+//		
+//		Configurator.initialize(builder.build());
+//   	}
 }

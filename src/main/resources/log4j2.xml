@@ -8,7 +8,9 @@
       <PatternLayout>
         <Pattern>%d %-5p [%t] %C{2} (%F:%L) - %m%n</Pattern>
       </PatternLayout>
-      <TimeBasedTriggeringPolicy />
+      <Policies>
+		  <OnStartupTriggeringPolicy />				
+	  </Policies>
     </RollingFile>
    <Console name="STDOUT" target="SYSTEM_OUT">
      <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
@@ -16,8 +18,8 @@
  </Appenders>
  <Loggers>
    <Root level="all">
-     <AppenderRef ref="STDOUT"/>
-     <AppenderRef ref="RollingFile"/>
+     <AppenderRef ref="STDOUT" level="all"/>
+     <AppenderRef ref="RollingFile" level="all"/>
    </Root>
  </Loggers>
  

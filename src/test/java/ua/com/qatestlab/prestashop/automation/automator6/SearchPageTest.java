@@ -13,12 +13,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 public class SearchPageTest {
 
-private static final Logger LOGGER = LogManager.getLogger(MainPageTest.class);
+	private static final Logger LOGGER = LogManager.getLogger(MainPageTest.class);
 	
-	private static WebDriver driver;
+	private static EventFiringWebDriver eventDriver;
 	
 	private SearchPage searchPage;
 	
@@ -29,13 +30,15 @@ private static final Logger LOGGER = LogManager.getLogger(MainPageTest.class);
 		//Selenium web driver initialization
 		LOGGER.info("Selenium web driver initialization");
 		System.setProperty("webdriver.chrome.driver","chromedriver.exe");
-		driver = new ChromeDriver();
+		WebDriver driver = new ChromeDriver();
+		eventDriver = new EventFiringWebDriver(driver);
+		eventDriver.register(new LoggerEventHandler(LOGGER));
 	}
 	
 	@Before
 	public void openSearchPage() throws InterruptedException {
-		driver.get("http://prestashop-automation.qatestlab.com.ua/ru/");
-		searchPage = new MainPage(driver).setUSDCurrency().searchFor("dress");
+		eventDriver.get("http://prestashop-automation.qatestlab.com.ua/ru/");
+		searchPage = new MainPage(eventDriver).setUSDCurrency().searchFor("dress");
 	}
 	
 	@Test
@@ -148,9 +151,9 @@ private static final Logger LOGGER = LogManager.getLogger(MainPageTest.class);
 		//Close web driver
 		LOGGER.info("-------------------------------------------------------");
 		LOGGER.info("Close web driver");
-		if (driver != null) {
-			driver.close();
-			driver.quit();
+		if (eventDriver != null) {
+			eventDriver.close();
+			eventDriver.quit();
 		}
 	}
 	

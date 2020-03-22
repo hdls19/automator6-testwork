@@ -1,12 +1,7 @@
 package ua.com.qatestlab.prestashop.automation.automator6;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public class Product {
 
-	private static final Logger LOGGER = LogManager.getLogger(Product.class);
-	
 	private int discount;
 	private float oldPrice = -1;
 	private float price;

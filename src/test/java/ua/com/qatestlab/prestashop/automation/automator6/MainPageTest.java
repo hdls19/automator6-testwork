@@ -3,12 +3,12 @@ package ua.com.qatestlab.prestashop.automation.automator6;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -19,7 +19,7 @@ public class MainPageTest {
 
 	private static final Logger LOGGER = LogManager.getLogger(MainPageTest.class);
 	
-	private static WebDriver driver;
+	private static EventFiringWebDriver eventDriver;
 	
 	private MainPage mainPage;
 	
@@ -30,13 +30,18 @@ public class MainPageTest {
 		//Selenium web driver initialization
 		LOGGER.info("Selenium web driver initialization");
 		System.setProperty("webdriver.chrome.driver","chromedriver.exe");
-		driver = new ChromeDriver();
+		System.setProperty("webdriver.chrome.logfile", "logs/chromedriver.log");
+		System.setProperty("webdriver.chrome.verboseLogging", "true");
+		
+		WebDriver driver = new ChromeDriver();
+		eventDriver = new EventFiringWebDriver(driver);
+		eventDriver.register(new LoggerEventHandler(LOGGER));
 	}
 	
 	@Before
 	public void openMainPage() throws InterruptedException {
-		driver.get("http://prestashop-automation.qatestlab.com.ua/ru/");
-		mainPage = new MainPage(driver);
+		eventDriver.get("http://prestashop-automation.qatestlab.com.ua/ru/");
+		mainPage = new MainPage(eventDriver);
 	}
 	
 	@Test
@@ -82,9 +87,9 @@ public class MainPageTest {
 		//Close web driver
 		LOGGER.info("-------------------------------------------------------");
 		LOGGER.info("Close web driver");
-		if (driver != null) {
-			driver.close();
-			driver.quit();
+		if (eventDriver != null) {
+			eventDriver.close();
+			eventDriver.quit();
 		}
 	}
 	
