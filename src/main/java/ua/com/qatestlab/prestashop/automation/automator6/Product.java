@@ -31,7 +31,7 @@ public class Product {
 			//LOGGER.warn("Failed to parse old price");
 		}
 		
-		String priceText = StringParser.parseString(s, "<", "price", "price", ">");
+		String priceText = StringParser.parseString(s, "<", "class=\"price\"", ">");
 		String[] split = priceText.split("&nbsp;");
 		float price = Float.parseFloat(split[0].replace(",", "."));
 		String currency = split[1];

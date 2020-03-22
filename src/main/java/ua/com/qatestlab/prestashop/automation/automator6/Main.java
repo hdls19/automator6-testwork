@@ -160,6 +160,24 @@ public class Main {
 						price, currency, nextPrice, nextCurrency, price >= nextPrice));
 			}
 			
+			//Discount test
+			LOGGER.info("-------------------------------------------------------");
+			LOGGER.info("Discount test");
+			LOGGER.info("-------------------------------------------------------");
+			
+			for (Product product: products) {
+				if (product.hasDiscount()) {
+					float calculatedPrice = product.getOldPrice() - product.getOldPrice() * product.getDiscount() / 100;
+					float accuracy = 0.01f;
+					boolean isEquals = Math.abs(product.getPrice() - calculatedPrice) <= accuracy;
+					LOGGER.info("Regular price: " + product.getOldPrice());
+					LOGGER.info("Discount: " + product.getDiscount() + " %");
+					LOGGER.info("Actual price: " + product.getPrice());
+					LOGGER.info("Calculated price: " + calculatedPrice);
+					LOGGER.info(String.format("Is equals (accuracy = %.2f): %b", accuracy, isEquals));
+					LOGGER.info("-------------------------------------------------------");
+				}
+ 			}
 		}
 		catch (Exception e) {
 			LOGGER.error("ERROR", e);

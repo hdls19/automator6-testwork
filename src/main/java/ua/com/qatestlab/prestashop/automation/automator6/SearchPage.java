@@ -21,7 +21,13 @@ public class SearchPage extends MainPage {
 		driver.findElement(sortDropdownLocator).click();
 		driverWait.until(ExpectedConditions.elementToBeClickable(sortPriceFromHighToLowLocator));
 		driver.findElement(sortPriceFromHighToLowLocator).click();
-		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+		
+		try {
+			Thread.sleep(1000);
+		}
+		catch (Exception e) {
+		}
+		
 		return new SearchPage(driver);
 	}
 	
