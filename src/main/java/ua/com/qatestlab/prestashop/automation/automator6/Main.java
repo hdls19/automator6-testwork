@@ -5,21 +5,28 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.RollingFileAppender;
-import org.apache.log4j.WriterAppender;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.ConsoleAppender;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.builder.api.AppenderComponentBuilder;
+import org.apache.logging.log4j.core.config.builder.api.ComponentBuilder;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
+import org.apache.logging.log4j.core.config.builder.api.LayoutComponentBuilder;
+import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
+import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 
 public class Main {
 
-	private static final Logger LOGGER = Logger.getLogger(Main.class);
+	private static final Logger LOGGER = LogManager.getLogger(Main.class);
 	
 	public static void main(String[] args) throws IOException {
-		initLogger();
 		LOGGER.info("=======================================================");
 		
 		//Selenium web driver initialization
@@ -129,21 +136,38 @@ public class Main {
 	}
 	
 	private static void initLogger() throws IOException {
-    	PatternLayout pattern = new PatternLayout("%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%t - %m%n");
-
-    	WriterAppender consoleAppender = new WriterAppender(pattern, System.out);
-
-    	consoleAppender.setThreshold(Level.INFO);
-
-    	RollingFileAppender fileAppender = new RollingFileAppender(pattern, 
-    			"logs/" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + ".log", true);
-
-    	fileAppender.setMaxFileSize("5MB");
-    	fileAppender.setMaxBackupIndex(0);
-
-    	fileAppender.setThreshold(Level.INFO);
-
-   		Logger.getRootLogger().addAppender(consoleAppender);
-   		Logger.getRootLogger().addAppender(fileAppender);
+		ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder();
+    	
+		builder.setStatusLevel(Level.ERROR);
+		builder.setConfigurationName("RollingBuilder");
+		
+		//Create console appender
+		AppenderComponentBuilder appenderBuilder = builder.newAppender("stdout", "CONSOLE").addAttribute("target",
+				ConsoleAppender.Target.SYSTEM_OUT);
+		appenderBuilder.add(builder.newLayout("PatternLayout").addAttribute("pattern", "%d [%t] %-5level: %msg%n%throwable"));
+		
+		builder.add(appenderBuilder);
+		
+		//Create rolling file appender
+		LayoutComponentBuilder layoutBuilder = builder.newLayout("PatternLayout")
+				.addAttribute("pattern", "%d [%t] %-5level: %msg%n");
+		ComponentBuilder triggeringPolicy = builder.newComponent("Policies")
+				.addComponent(builder.newComponent("CronTriggeringPolicy").addAttribute("schedule", "0 0 0 * * ?"))
+				.addComponent(builder.newComponent("SizeBasedTriggeringPolicy").addAttribute("size", "100M"));
+		appenderBuilder = builder.newAppender("rolling", "RollingFile")
+				.addAttribute("fileName", "logs/rolling.log")
+				.addAttribute("filePattern", "logs/rolling-%d{MM-dd-yy}.log")
+				.add(layoutBuilder)
+				.addComponent(triggeringPolicy);
+		builder.add(appenderBuilder);
+		
+		builder.add(builder.newLogger("TestLogger", Level.DEBUG)
+				.add(builder.newAppenderRef("rolling"))
+				.addAttribute("additivity", false));
+		
+		builder.add(builder.newRootLogger(Level.DEBUG)
+				.add(builder.newAppenderRef("rolling")));
+		
+		Configurator.initialize(builder.build());
    	}
 }
