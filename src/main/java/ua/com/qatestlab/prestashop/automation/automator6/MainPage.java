@@ -21,10 +21,11 @@ public class MainPage {
 	protected final WebDriver driver;
 	protected final WebDriverWait driverWait;
 	
-	protected By currentCurrencyLocator = By.xpath("//*[@id=\"_desktop_currency_selector\"]/div/span[2]");
-	protected By usdCurrencyLocator = By.xpath("//a[text()=\"USD $\"]");
-	protected By pricesLocator = By.xpath("//span[@itemprop=\"price\"]");
-	protected By searchLocator = By.xpath("//*[@id=\"search_widget\"]/form/input[2]");
+	private By currentCurrencyLocator = By.xpath("//*[@id=\"_desktop_currency_selector\"]/div/span[2]");
+	private By usdCurrencyLocator = By.xpath("//a[text()=\"USD $\"]");
+	private By pricesLocator = By.xpath("//span[@itemprop=\"price\"]");
+	private By searchLocator = By.xpath("//*[@id=\"search_widget\"]/form/input[2]");
+	private By articlesLocator = By.xpath("//article");
 	
 	public MainPage(WebDriver driver) {
 		this.driver = driver;
@@ -46,6 +47,22 @@ public class MainPage {
 		searchElement.sendKeys(search);
 		searchElement.submit();
 		return new SearchPage(driver);
+	}
+	
+	public List<Product> getProducts() {
+		List<Product> products = new ArrayList<Product>();
+		List<WebElement> elements = driver.findElements(articlesLocator);
+		for (WebElement e: elements) {
+			String innerHTML = e.getAttribute("innerHTML");
+			
+			try {
+				products.add(Product.parseProduct(innerHTML));
+			}
+			catch (Exception ex) {
+				LOGGER.warn("Failed to parse product from content: " + innerHTML, ex);
+			}
+		}
+		return products;
 	}
 	
 	public List<String> getPrices() {

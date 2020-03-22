@@ -1,15 +1,28 @@
 package ua.com.qatestlab.prestashop.automation.automator6;
 
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class SearchPage extends MainPage {
 
 	private By findCountLocator = By.xpath("//*[@id=\"js-product-list-top\"]/div[1]/p");
 	private By showsLabelLocator = By.xpath("//*[@id=\"js-product-list\"]/nav/div[1]");
+	private By sortDropdownLocator = By.xpath("//div[contains(@class, \"products-sort-order\")]");
+	private By sortPriceFromHighToLowLocator = By.xpath("//div[contains(@class, \"products-sort-order\")]/div/a[5]");
 	
 	public SearchPage(WebDriver driver) {
 		super(driver);
+	}
+	
+	public SearchPage sortPriceFromHighToLow() {
+		driver.findElement(sortDropdownLocator).click();
+		driverWait.until(ExpectedConditions.elementToBeClickable(sortPriceFromHighToLowLocator));
+		driver.findElement(sortPriceFromHighToLowLocator).click();
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+		return new SearchPage(driver);
 	}
 	
 	public int getFindCount() {

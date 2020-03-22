@@ -140,6 +140,26 @@ public class Main {
 			expectedCurrencySymbol = "$";
 			prices = searchPage.getPrices();
 			checkPricesCurrency(prices, expectedCurrencySymbol);
+			
+			//Sort test
+			LOGGER.info("-------------------------------------------------------");
+			LOGGER.info("Sort test");
+			LOGGER.info("-------------------------------------------------------");
+			
+			List<Product> products = searchPage.sortPriceFromHighToLow().getProducts();
+			for (int i = 0; i < products.size() - 1; i++) {
+				Product product = products.get(i);
+				Product nextProduct = products.get(i + 1);
+				
+				float price = product.hasDiscount() ? product.getOldPrice() : product.getPrice();
+				float nextPrice = nextProduct.hasDiscount() ? nextProduct.getOldPrice() : nextProduct.getPrice();
+				String currency = product.getCurrency();
+				String nextCurrency = nextProduct.getCurrency();
+				
+				LOGGER.info(String.format("Price: %.2f %s, next price: %.2f %s, current price is bigger (or equals): %b",
+						price, currency, nextPrice, nextCurrency, price >= nextPrice));
+			}
+			
 		}
 		catch (Exception e) {
 			LOGGER.error("ERROR", e);
