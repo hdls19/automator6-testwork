@@ -3,7 +3,10 @@ package ua.com.qatestlab.prestashop.automation.automator6;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -11,6 +14,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MainPage {
 
+	private static final Logger LOGGER = LogManager.getLogger(MainPage.class);
+	
 	private static final int DEFAULT_WAITING_TIME = 10; //seconds
 	
 	protected final WebDriver driver;
@@ -51,7 +56,14 @@ public class MainPage {
 	}
 	
 	public String getCurrency() {
-		driverWait.until(ExpectedConditions.presenceOfElementLocated(currentCurrencyLocator));
+		try {
+			driverWait.until(ExpectedConditions.presenceOfElementLocated(currentCurrencyLocator));
+		}
+		catch (TimeoutException e) {
+			LOGGER.warn("Failed to get currency. Refresh page and try again", e);
+			driver.navigate().refresh();
+			driverWait.until(ExpectedConditions.presenceOfElementLocated(currentCurrencyLocator));
+		}
 		return driver.findElement(currentCurrencyLocator).getText();
 	}
 	

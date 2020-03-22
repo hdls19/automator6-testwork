@@ -131,6 +131,15 @@ public class Main {
 			LOGGER.info("Actual count: " + actualCount);
 			LOGGER.info("Real count: " + realCount);
 			LOGGER.info("Is equals: " + (realCount == actualCount));
+			
+			//Search page currency test
+			LOGGER.info("-------------------------------------------------------");
+			LOGGER.info("Search page currency test");
+			LOGGER.info("-------------------------------------------------------");
+			
+			expectedCurrencySymbol = "$";
+			prices = searchPage.getPrices();
+			checkPricesCurrency(prices, expectedCurrencySymbol);
 		}
 		catch (Exception e) {
 			LOGGER.error("ERROR", e);
@@ -151,7 +160,8 @@ public class Main {
 			try {
 				String actualCurrencySymbol = s.split(" ")[1];
 				boolean isMatch = expectedCurrencySymbol.equals(actualCurrencySymbol);
-				LOGGER.info("Price: " + s + ", currency symbol is match: " + isMatch);
+				LOGGER.info(String.format("Price: %s, expected currency: %s, currency is match: %b", s,
+						expectedCurrencySymbol, isMatch));
 			}
 			catch (ArrayIndexOutOfBoundsException e) {
 				LOGGER.warn("There are no currency symbol in price: " + s, e);
