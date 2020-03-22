@@ -30,8 +30,6 @@ public class MainPageTest {
 		//Selenium web driver initialization
 		LOGGER.info("Selenium web driver initialization");
 		System.setProperty("webdriver.chrome.driver","chromedriver.exe");
-		System.setProperty("webdriver.chrome.logfile", "logs/chromedriver.log");
-		System.setProperty("webdriver.chrome.verboseLogging", "true");
 		
 		WebDriver driver = new ChromeDriver();
 		eventDriver = new EventFiringWebDriver(driver);
