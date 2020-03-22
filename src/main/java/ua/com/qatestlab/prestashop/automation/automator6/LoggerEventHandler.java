@@ -121,8 +121,7 @@ public class LoggerEventHandler implements WebDriverEventListener {
 
 	@Override
 	public void beforeChangeValueOf(WebElement element, WebDriver driver, CharSequence[] keysToSend) {
-		// TODO Auto-generated method stub
-		
+		logger.info("Typing keys [" + String.join(", ", keysToSend) + "] to element: " + element.toString());
 	}
 
 	@Override
