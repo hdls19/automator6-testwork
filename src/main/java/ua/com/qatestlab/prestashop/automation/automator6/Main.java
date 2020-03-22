@@ -9,6 +9,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
+import ua.com.qatestlab.prestashop.automation.automator6.pages.MainPage;
+import ua.com.qatestlab.prestashop.automation.automator6.pages.SearchPage;
+
 
 public class Main {
 

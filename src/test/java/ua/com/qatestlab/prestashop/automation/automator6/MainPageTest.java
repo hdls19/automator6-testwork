@@ -10,6 +10,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
+import ua.com.qatestlab.prestashop.automation.automator6.pages.MainPage;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

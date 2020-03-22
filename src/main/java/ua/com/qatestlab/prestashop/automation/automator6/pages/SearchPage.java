@@ -1,10 +1,12 @@
-package ua.com.qatestlab.prestashop.automation.automator6;
+package ua.com.qatestlab.prestashop.automation.automator6.pages;
 
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import ua.com.qatestlab.prestashop.automation.automator6.StringParser;
 
 public class SearchPage extends MainPage {
 
