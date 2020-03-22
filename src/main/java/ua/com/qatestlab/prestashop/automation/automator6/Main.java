@@ -117,6 +117,20 @@ public class Main {
 			LOGGER.info("Actual count: " + actualCount);
 			LOGGER.info("Expected count: " + expectedCount);
 			LOGGER.info("Is equals: " + (expectedCount == actualCount));
+			
+			//Advanced search count test
+			LOGGER.info("-------------------------------------------------------");
+			LOGGER.info("Advanced search count test");
+			LOGGER.info("-------------------------------------------------------");
+			
+			int pagesCount = searchPage.getPagesCount();
+			int perPageCount = searchPage.getFindCountPerPage();
+			int currentPageCount = searchPage.getPrices().size();
+			int realCount = (pagesCount - 1) * perPageCount + currentPageCount;
+			
+			LOGGER.info("Actual count: " + actualCount);
+			LOGGER.info("Real count: " + realCount);
+			LOGGER.info("Is equals: " + (realCount == actualCount));
 		}
 		catch (Exception e) {
 			LOGGER.error("ERROR", e);
