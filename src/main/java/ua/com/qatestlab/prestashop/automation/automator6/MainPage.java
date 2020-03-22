@@ -16,7 +16,7 @@ public class MainPage {
 
 	private static final Logger LOGGER = LogManager.getLogger(MainPage.class);
 	
-	private static final int DEFAULT_WAITING_TIME = 10; //seconds
+	private static final int DEFAULT_WAITING_TIME = 20; //seconds
 	
 	protected final WebDriver driver;
 	protected final WebDriverWait driverWait;
