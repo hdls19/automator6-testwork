@@ -37,8 +37,6 @@ public class Main {
 			System.setProperty("webdriver.chrome.driver","chromedriver.exe");
 			driver = new ChromeDriver();
 			
-			if (true) throw new IllegalStateException("Something goes wrong");
-			
 			//Go to main URL
 			driver.get("http://prestashop-automation.qatestlab.com.ua/ru/");
 			MainPage mainPage = new MainPage(driver);
